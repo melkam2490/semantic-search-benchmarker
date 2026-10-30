@@ -1,0 +1,62 @@
+[
+  {
+    "query": "What header is needed to authenticate API requests?",
+    "relevant_sections": ["Authentication"]
+  },
+  {
+    "query": "How do I create a new user account?",
+    "relevant_sections": ["User Endpoints"]
+  },
+  {
+    "query": "Which database does the application use?",
+    "relevant_sections": ["Database Configuration"]
+  },
+  {
+    "query": "What does HTTP 401 mean?",
+    "relevant_sections": ["Authentication", "Error Handling"]
+  },
+  {
+    "query": "What status code means a resource was created?",
+    "relevant_sections": ["User Endpoints", "Error Handling"]
+  },
+  {
+    "query": "How many requests can a user make per minute?",
+    "relevant_sections": ["Rate Limiting"]
+  },
+  {
+    "query": "How does the application improve response speed?",
+    "relevant_sections": ["Caching"]
+  },
+  {
+    "query": "Which sensitive values should not be written to logs?",
+    "relevant_sections": ["Logging and Monitoring"]
+  },
+  {
+    "query": "How does keyword retrieval work?",
+    "relevant_sections": ["Search Configuration"]
+  },
+  {
+    "query": "Find the exact setting CUSTOM_CONFIG_FLAG_XYZ",
+    "relevant_sections": ["Custom Configuration"]
+  },
+  {
+    "query": "How can document pieces share context with each other?",
+    "relevant_sections": ["Document Chunking"]
+  },
+  {
+    "query": "What does cosine similarity measure?",
+    "relevant_sections": ["Vector Search"]
+  },
+  {
+    "query": "How do we measure whether search results are relevant?",
+    "relevant_sections": ["Benchmarking"]
+  },
+  {
+    "query": "How should passwords and API secrets be protected?",
+    "relevant_sections": ["Database Configuration", "Logging and Monitoring", "API Security"]
+  },
+  {
+    "query": "What security protections should a production API use?",
+    "relevant_sections": ["API Security"]
+  }
+]

@@ -1,0 +1,22 @@
+
+# Python virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ChromaDB local database
+chroma_db/
+
+# Environment variables and secrets
+.env
+
+# Editor files
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
