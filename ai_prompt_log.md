@@ -1,88 +1,79 @@
-# AI Prompt Log and Human Audit
+# AI Prompt and Code Audit Log
 
-## Project: SearchWorkbench
+## 1. Initial AI Prompt
 
-### AI assistance
+I asked AI to help build a production-style two-stage RAG search pipeline using Python.
 
-AI assistance was used to help create the document chunkers, BM25 keyword search, dense semantic search, benchmark calculations, and Streamlit dashboard.
+The requested features included:
 
-The generated code was reviewed and tested during development.
+- Query rewriting
+- Dense retrieval using ChromaDB
+- Cross-Encoder reranking
+- Confidence scoring using sigmoid
+- A confidence threshold of 0.55
+- DuckDuckGo web fallback
+- Streamlit user interface
+- Automated tests
+- Prompt injection protection
 
-## Human Audit: Problems Found
+## 2. Problems Found and Fixed
 
-### Issue 1: Chunk IDs can change between chunking methods
-
-**Problem:**
-
-Fixed-size chunks and structure-aware chunks create different chunk IDs. Using chunk IDs as the only ground truth would make benchmark comparisons unreliable.
-
-**Correction:**
-
-The evaluation questions use meaningful section names, such as Authentication and Database Configuration, instead of relying only on chunk IDs.
-
-**Before:**
-
-```python
-relevant_sections = ["api-document-fixed-1"]
-```
-
-**After:**
-
-```python
-relevant_sections = ["Authentication"]
-```
-
-### Issue 2: Cosine distance and cosine similarity
+### Problem 1: Syntax Error in Search Pipeline
 
 **Problem:**
 
-ChromaDB returns cosine distance. A smaller distance means a closer match.
+The document-filtering code was accidentally placed inside the
+`search_dense()` function call. This caused a Python SyntaxError.
 
-It would be incorrect to sort these results from highest to lowest.
+**Fix:**
 
-**Correction:**
+I moved the filtering logic after the document retrieval step.
 
-The search system keeps ChromaDB's returned ranking, where the closest result comes first.
+The corrected code filters the retrieved documents before reranking.
 
-**Before:**
+**Verification:**
 
-```python
-results.sort(
-    key=lambda result: result["score"],
-    reverse=True
-)
-```
+`python -m py_compile .\src\search.py` completed successfully.
 
-**After:**
-
-```python
-# ChromaDB already returns the closest results first.
-# Lower cosine distance means a better match.
-return results
-```
-
-### Issue 3: BM25 tokenization
+### Problem 2: Prompt Injection Protection Was Not Connected
 
 **Problem:**
 
-The document text and search questions must use the same tokenization rules.
+The security detection functions existed, but retrieved documents
+were not being checked by the search pipeline.
 
-**Correction:**
+**Fix:**
 
-The same tokenize() function is used for both documents and questions.
+I imported `is_prompt_injection` into `search.py` and added a filter
+to remove documents containing known prompt injection phrases.
 
-### Issue 4: Fixed-size chunking
+**Verification:**
 
-**Problem:**
+I added security tests and ran the full test suite.
 
-Fixed-size chunking can split Markdown headings or code examples between chunks.
+All 13 tests passed.
 
-**Correction:**
+## 3. Additional Security Limitation
 
-The project also includes structure-aware chunking, which divides documents by Markdown headings.
+The current prompt injection detector uses a list of known phrases.
+It is a basic defense, not complete protection against every attack.
 
-## Final Review
+A production system would need stronger security controls.
 
-The project includes keyword search, semantic search, multiple chunking methods, benchmark calculations, and automated tests.
+## 4. Final Test Results
 
-The benchmark results must be measured by running the application and tests. No benchmark scores are assumed or invented.
+Command:
+
+`pytest -q`
+
+Result:
+
+13 passed.
+
+## 5. Summary
+
+I reviewed and tested the AI-assisted code instead of accepting it
+without checking.
+
+I corrected a syntax error, connected the security filter to the
+search pipeline, and verified the project with automated tests.
